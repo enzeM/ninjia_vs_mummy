@@ -15,7 +15,6 @@ public class Spike : MonoBehaviour
 	{
 		nextHarm = 0f;
 		harmRate = 0.5f;
-		//player = GameObject.FindObjectOfType<Player> (); 
 		playerHealth = GameObject.FindObjectOfType<HealthManager> ();
 	}	
 
