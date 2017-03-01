@@ -13,7 +13,6 @@ public class Player : MonoBehaviour
 	private bool attack;
 	private bool slide;
 	private bool jump;
-	private bool dunLand;
 	private bool harm;
 	private bool die;
 	private bool fire;
@@ -108,11 +107,6 @@ public class Player : MonoBehaviour
 		{
 			playerAnimator.SetBool ("ground", false);
 			playerBody.AddForce (new Vector2 (0, jumpForce));
-		}
-		//down through some specific ground tile
-		if(dunLand && !this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("DunLand")) 
-		{
-			playerAnimator.SetTrigger("dunLand");
 		}
 		//harm reaction when attacked by obstacle or ememy
 		if(harm && !this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Harm")) 
@@ -285,10 +279,6 @@ public class Player : MonoBehaviour
 		{
 			jump = true;
 		}
-		if (Input.GetKeyDown (KeyCode.S)) 
-		{
-			dunLand = true;
-		}
 		if(Input.GetKeyDown(KeyCode.L)) 
 		{
 			fire = true;
@@ -322,7 +312,6 @@ public class Player : MonoBehaviour
 		attack = false;
 		slide = false;
 		jump = false;
-		dunLand = false;
 		harm = false;
 		fire = false;
 	}

@@ -30,7 +30,7 @@ public class viewController : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void LateUpdate () {
-		myCamera.transform.position = new Vector3 (Mathf.Clamp (target.position.x, xMin, xMax), myCamera.transform.position.y, myCamera.transform.position.z);
+		myCamera.transform.position = new Vector3 (Mathf.Clamp (target.position.x, xMin, xMax),Mathf.Clamp (target.position.y, yMin, yMax), myCamera.transform.position.z);
 		transform.position = new Vector3 (transform.position.x, Mathf.Clamp (target.position.y, yMin, yMax), transform.position.z);
 	}
 }
