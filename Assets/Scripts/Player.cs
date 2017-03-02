@@ -29,7 +29,7 @@ public class Player : Character
 	}
 	public event DeadEventHandler Dead;
 
-	private bool immortal = false;
+	public bool immortal = false;
 
 	[SerializeField]
 	private float immortalTime;
@@ -72,7 +72,7 @@ public class Player : Character
 		}	
 	}
 
-	private float defaultGravity;
+	public float defaultGravity;
 
 	[SerializeField]
 	private bool airControl;
@@ -269,11 +269,11 @@ public class Player : Character
 		//listening key status to generate glide param
 		if(Input.GetKey(KeyCode.W))
 		{
-			
+			MyAnimator.SetTrigger ("glide");
 		}
 		if(Input.GetKeyUp(KeyCode.W))
 		{
-			
+			MyAnimator.ResetTrigger ("glide");
 		}
 	}
 	public void OnDead(){
