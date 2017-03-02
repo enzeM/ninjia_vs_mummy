@@ -1,18 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+[RequireComponent(typeof(Rigidbody2D))]
 public class Kunai : MonoBehaviour 
 {
-
 	private Rigidbody2D kunaiBody;
 	[SerializeField]
 	private float speed;
 	[SerializeField]
-	private float aliveTime;
-	[SerializeField]
 	private int weaponDamage;
 
-	void Awake() 
+
+	void Start() 
 	{
 		kunaiBody = GetComponent<Rigidbody2D>();		
 		//decided bullet rotation
@@ -21,27 +21,14 @@ public class Kunai : MonoBehaviour
 		} else {
 			kunaiBody.AddForce(new Vector2(1, 0) * speed, ForceMode2D.Impulse);
 		}
-		Destroy(gameObject, aliveTime);
+
+	}
+	void FixedUpdate(){
+		
 	}
 
-	//bullet hit target
-	void OnTriggerEnter2D (Collider2D collider) 
+	void OnBecameInvisible()
 	{
-		HandleKunaiAttack (collider);
-	}
-
-	void OnTriggerStay2D (Collider2D collider) 
-	{
-		HandleKunaiAttack (collider);
-	}
-
-	private void HandleKunaiAttack (Collider2D collider) {
-		if(collider.gameObject.layer == LayerMask.NameToLayer("Shootable")) {
-			Destroy(gameObject);
-			if (collider.CompareTag ("Enemy")) {
-				EnemyHealth enemyHealth = collider.gameObject.GetComponent<EnemyHealth> ();
-				enemyHealth.addDamage(weaponDamage);
-			}
-		}
+		Destroy (gameObject);
 	}
 }

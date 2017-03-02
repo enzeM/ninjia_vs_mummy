@@ -1,59 +1,124 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Player : MonoBehaviour 
+public delegate void DeadEventHandler();
+
+public class Player : Character
 {
+	private static Player instance;
 
-	private Rigidbody2D playerBody;
-	private Animator playerAnimator;
+	public static Player Instance {
+		get {
+			if (instance == null) {
+				instance = GameObject.FindObjectOfType<Player> ();
+			}
+			return instance;
+		}
+	}
+	[SerializeField]
+	private Slider healthSlider;
+	private int curHealth;
+	public override void Death ()
+	{
+		MyRigibody.velocity = Vector2.zero;
+		MyAnimator.SetTrigger ("Idle");
+		health = 50;
+		transform.position = startPos;
+	}
+	public event DeadEventHandler Dead;
+
+	private bool immortal = false;
+
+	[SerializeField]
+	private float immortalTime;
+
+	private SpriteRenderer spriteRenderer;
+
+	private IEnumerator IndicateImmortal(){
+		while(immortal){
+			spriteRenderer.enabled = false;
+			yield return new WaitForSeconds (.1f);
+			spriteRenderer.enabled = true;
+			yield return new WaitForSeconds (.1f);
+		}
+	}
+	public override bool IsDead {
+		get {
+			return curHealth <= 0;
+		}
+	}
+
+	public override IEnumerator TakeDamage ()
+	{
+		if (!immortal) {
+			curHealth -= 10;
+			if (!IsDead) {
+				MyAnimator.SetTrigger ("damage");
+				immortal = true;
+
+				StartCoroutine (IndicateImmortal ());
+				yield return new WaitForSeconds (immortalTime);
+
+				immortal = false;
+			} else {
+				MyAnimator.SetLayerWeight (1, 0);
+				MyAnimator.SetTrigger ("die");
+				GameOver ();
+				//let enemy know player is dead
+				OnDead ();
+			}
+		}	
+	}
+
 	private float defaultGravity;
 
-	private bool faceRight;
-	private bool attack;
-	private bool slide;
-	private bool jump;
-	private bool harm;
-	private bool die;
-	private bool fire;
-	private bool glide;
+	[SerializeField]
+	private bool airControl;
 
-	//check player on ground
-	private bool grounded;
 	private float groundedRaduis = 0.2f;
 	public Transform groundCheck;
 	public LayerMask whatIsGround; //define what is ground for player
-
-	//shooting param
-	[SerializeField]
-	private Transform shootPoint;
-	[SerializeField]
-	private GameObject bullet;
-	private float fireRate = 0.5f;
-	private float nextFire = 0f;
 
 	//boost speed param, ensure speed allow to boost only once
 	private bool isBoost;
 
 	[SerializeField]
-	//how fast the player can move
-	private int moveSpeed;
-	[SerializeField]
 	//how high the player can jump
 	private float jumpForce;
 
+	public Rigidbody2D MyRigibody{
+		get;
+		set;
+	}
+
+	public bool Slide{
+		get;
+		set;
+	}
+	public bool Jump{
+		get;
+		set;
+	}
+	public bool OnGround{
+		get;
+		set;
+	}
 
 	// Use this for initialization
-	void Start () 
+	public override void Start () 
 	{
-		playerBody = GetComponent<Rigidbody2D> ();		
-		playerAnimator = GetComponent<Animator> ();
-		defaultGravity = playerBody.gravityScale;
-		faceRight = true;
-		fire = false;
-		harm = false;
-		die = false;
-		glide = false;
+		base.Start();
+		MyRigibody = GetComponent<Rigidbody2D> ();		
+		spriteRenderer = GetComponent<SpriteRenderer> ();
+		defaultGravity = MyRigibody.gravityScale;
+
+		curHealth = health;
+		healthSlider.maxValue = health;
+		healthSlider.value = curHealth;
+
+		startPos = transform.position;
 
 		isBoost = false;
 	}
@@ -61,153 +126,80 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		HandleInput ();
+		if(IsDead){
+			MyRigibody.velocity = Vector2.zero;
+			transform.position = startPos;
+		}
+		if (!TakingDamage && !IsDead) {
+			HandleInput ();
+		}
 	}
 
 	//ensure no matter a computer is faster or slow, the player will move with same speed
 	void FixedUpdate() 
 	{ 
-		//check fequently player is on ground -> return true if player on the ground, else return false
-		grounded = Physics2D.OverlapCircle(groundCheck.position, groundedRaduis, whatIsGround);
-		playerAnimator.SetBool ("ground", grounded);
-
-		//how fast we are moving up or down
-		playerAnimator.SetFloat("vSpeed", playerBody.velocity.y);
-
-		//flip player sprite when moving left or right 
-		float horizontal = Input.GetAxis ("Horizontal");
-
-		if (!die) //not able to move after player is dead
-		{
+		if (!TakingDamage && !IsDead) {
+			//check fequently player is on ground -> return true if player on the ground, else return false
+			OnGround = IsGrounded ();
+			//flip player sprite when moving left or right 
+			float horizontal = Input.GetAxis ("Horizontal");
 			HandleMovement (horizontal);
+
 			Flip (horizontal);
-			HandleAttack ();
-			HandleFire ();
-			HandleJumpFire ();
+		
+			HandleLayers ();
 		}
-		ResetValues ();
+		HandleHealth ();
+	}
+	private void HandleHealth() 
+	{
+		if(curHealth > health)
+		{
+			curHealth = health;
+		}
+		healthSlider.value = curHealth;
+	}
+	private bool IsGrounded()
+	{
+		if(MyRigibody.velocity.y <= 0)
+		{
+			Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, groundedRaduis, whatIsGround);
+			for(int i = 0; i <colliders.Length;i++)
+			{
+				if(colliders[i].gameObject != gameObject)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	private void HandleMovement(float horizontal) 
 	{
-		//if player animation is neither attack or jump attack, player allowed to move
-		if (!this.playerAnimator.GetCurrentAnimatorStateInfo (0).IsTag ("Attack")) 
-		{ 
-			playerBody.velocity = new Vector2 (horizontal * moveSpeed, playerBody.velocity.y);
-		}
-		//handle slide -> slide can not operate sequentially, slide is allowed only when player is running
-		if (slide 
-			&& this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Run") 
-			&& !this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Slide")) 
+		if(MyRigibody.velocity.y < 0)
 		{
-			playerAnimator.SetTrigger ("slide");
+			MyAnimator.SetBool ("land", true);
 		}
-		//handle jump -> jump can not operate sequentially
-		if (jump && !glide && !this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Jump")) 
+		if(!Attack && !Slide && (OnGround || airControl))
 		{
-			playerAnimator.SetBool ("ground", false);
-			playerBody.AddForce (new Vector2 (0, jumpForce));
+			MyRigibody.velocity = new Vector2 (horizontal * moveSpeed, MyRigibody.velocity.y);
 		}
-		//harm reaction when attacked by obstacle or ememy
-		if(harm && !this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Harm")) 
+		if(Jump && MyRigibody.velocity.y == 0)
 		{
-			playerAnimator.SetTrigger("harm");
+			MyRigibody.AddForce (new Vector2 (0, jumpForce));
 		}
-		//glide in the air 
-		if(!grounded) {
-			playerAnimator.SetBool("glide", glide);
-			HandleGlide ();
-		}
-
-		playerAnimator.SetFloat ("speed", Mathf.Abs(horizontal)); //change states between idel and run
+		MyAnimator.SetFloat ("speed", Mathf.Abs (horizontal));
 	}
 
-	private void HandleAttack() 
+	//create bullet(kunai) to fire, take value as parameter, 0 is ground fire, 1 is air fire
+	private void Fire (int value)
 	{
-		//player allow to fire must fulfill all following conditions
-		//1. player is grounded 
-		//2. player is not in other attack animate state 
-		//3. current time is larger than player's fire stand by time
-		if (grounded && attack && !this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsTag("Attack")) 
-		{
-			playerAnimator.SetTrigger ("attack");	
-			playerBody.velocity = Vector2.zero; // also used to stop move and attack at the same time
+		if (!OnGround && value == 1 || OnGround && value == 0) {
+			Fire ();
 		}
 	}
 
-	private void HandleFire() 
-	{
-		//player allow to fire must fulfill all following conditions
-		//1. player is grounded 
-		//2. player is not in any other attack animate state 
-		//3. current time is larger than player's fire stand by time
-		if(grounded && fire && Time.time > nextFire) 
-		{
-			playerAnimator.SetTrigger ("fire");
-			nextFire = Time.time + fireRate;
-			StartCoroutine (FireWithFireRate(this.fireRate));
-			playerBody.velocity = Vector2.zero; //stop move and attack at the same time
-		}	
-	}
-
-	private void HandleJumpFire()
-	{
-		//player allow to fire must fulfill all following conditions
-		//1. player is on air(not on ground) 
-		//2. player is not in any other attack animate state 
-		//3. current time is larger than player's fire stand by time
-		if(!grounded && fire && Time.time > nextFire)
-		{
-			playerAnimator.SetTrigger ("jumpFire");
-			nextFire = Time.time + fireRate;
-			StartCoroutine (FireWithFireRate(this.fireRate/10));
-		}	
-	}
-
-	//create bullet(kunai) to fire
-	private void Fire() 
-	{
-		if(faceRight) 
-		{
-			Instantiate(bullet, shootPoint.position, Quaternion.Euler (new Vector3(0, 0, 0)));
-		} 
-		else 
-		{
-			Instantiate(bullet, shootPoint.position, Quaternion.Euler (new Vector3(0, 0, 180)));
-		}
-	}
-
-	//fire with delay time that consistance with fire rate
-	private IEnumerator FireWithFireRate(float fireRate) 
-	{
-		yield return new WaitForSeconds (fireRate);
-		Fire();
-		yield return 0;
-	}
-
-	//check glide status to modify player's gravity scale
-	private void HandleGlide()
-	{
-		if(glide) 
-		{
-			playerBody.gravityScale = 0.2f;
-		}
-		else 
-		{
-			playerBody.gravityScale = defaultGravity;
-		}
-	}
-
-	//setter used to manage player health
-	public void setHarm (bool harm)
-	{
-		this.harm = harm;
-	}
-
-	public void setDie (bool die)
-	{
-		this.die = die;
-	}
 
 	//boost move speed params
 	public int GetMoveSpeed() 
@@ -232,87 +224,67 @@ public class Player : MonoBehaviour
 	{
 		this.isBoost = isBoost;
 	}
-		
-	/*
-	void OnCollisionEnter2D(Collision2D collision) 
-	{
-		//listen slide status
-		if (this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Slide") 
-			&& collision.gameObject.tag == "Block") 
-		{
-			collision.collider.isTrigger = true;
-		}
+	public int GetHealth(){
+		return this.curHealth;
 	}
-
-	void OnCollisionStay2D(Collision2D collision) 
-	{
-		//listen dunland status
-		if (this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("DunLand") 
-			&& collision.gameObject.tag == "Block") 
-		{
-			collision.collider.isTrigger = true;
-		}
-
-	}
-
-	void OnTriggerExit2D (Collider2D collider) 
-	{
-		//revert slide status after player exit item with Block tag
-		if (collider.gameObject.tag == "Block") 
-		{
-			collider.isTrigger = false;
-		}
-	}
-	*/
-
-	private void HandleInput() 
-	{
-		if (Input.GetKeyDown (KeyCode.J)) 
-		{
-			attack = true;
-		} 
-		if (Input.GetKeyDown (KeyCode.K)) 
-		{ 
-			slide = true;
-		}
-		if (Input.GetKeyDown (KeyCode.Space)) 
-		{
-			jump = true;
-		}
-		if(Input.GetKeyDown(KeyCode.L)) 
-		{
-			fire = true;
-		}
-		//listening key status to generate glide param
-		if(Input.GetKey(KeyCode.W))
-		{
-			glide = true;
-		}
-		if(Input.GetKeyUp(KeyCode.W))
-		{
-			glide = false;
-		}
-	}
-
 	//change face direction properly
 	private void Flip(float horizontal) 
 	{
 		if (horizontal < 0 && faceRight || horizontal > 0 && !faceRight) 
 		{
-			faceRight = !faceRight;
-			Vector3 newPlayerScale = transform.localScale;
-			newPlayerScale.x *= -1;
-			transform.localScale = newPlayerScale;
+			ChangeDirection ();
 		}	
 	}
 
-	//reset values that only operate once each time such as attack and jump
-	private void ResetValues() 
+	private void HandleLayers()
 	{
-		attack = false;
-		slide = false;
-		jump = false;
-		harm = false;
-		fire = false;
+		if(!OnGround)
+		{
+			MyAnimator.SetLayerWeight (1, 1);
+		}
+		else
+		{
+			MyAnimator.SetLayerWeight (1, 0);
+		}
+	}
+
+	private void HandleInput() 
+	{
+		if (Input.GetKeyDown (KeyCode.J)) 
+		{
+			MyAnimator.SetTrigger ("attack");
+		} 
+		if (Input.GetKeyDown (KeyCode.K)) 
+		{ 
+			MyAnimator.SetTrigger ("throw");
+		}
+		if (Input.GetKeyDown (KeyCode.Space)) 
+		{
+			MyAnimator.SetTrigger ("jump");
+		}
+		if(Input.GetKeyDown(KeyCode.LeftShift)) 
+		{
+			MyAnimator.SetTrigger ("slide");
+		}
+		//listening key status to generate glide param
+		if(Input.GetKey(KeyCode.W))
+		{
+			
+		}
+		if(Input.GetKeyUp(KeyCode.W))
+		{
+			
+		}
+	}
+	public void OnDead(){
+		if(Dead != null){
+			Dead ();
+		}
+	}
+	void OnBecameInvisible(){
+		GameOver ();
+	}
+	private void GameOver(){
+		Debug.Log ("You died");
 	}
 }

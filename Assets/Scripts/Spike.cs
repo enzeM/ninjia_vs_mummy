@@ -4,18 +4,9 @@ using UnityEngine;
 
 public class Spike : MonoBehaviour 
 {
-
-	//private Player player;
-	private float nextHarm;
-	private float harmRate;
-	private HealthManager playerHealth;
-
 	// Use this for initialization
 	void Start () 
 	{
-		nextHarm = 0f;
-		harmRate = 0.5f;
-		playerHealth = GameObject.FindObjectOfType<HealthManager> ();
 	}	
 
 	void OnTriggerStay2D(Collider2D collider)
@@ -28,10 +19,10 @@ public class Spike : MonoBehaviour
 	{
 		if (collider.CompareTag("Player"))
 		{
-			if(playerHealth.GetHealth () > 0 && Time.time > nextHarm) 
+			
+			if(Player.Instance.GetHealth()> 0) 
 			{
-				playerHealth.Harm ();
-				nextHarm = Time.time + harmRate;
+				StartCoroutine (Player.Instance.TakeDamage ());
 			}
 		}
 	}
