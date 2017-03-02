@@ -5,10 +5,16 @@ using UnityEngine;
 public class ShootBehaviour : StateMachineBehaviour {
 
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		animator.GetComponent<Character>().Shoot = true;
-		if(Player.Instance.OnGround){
-			Player.Instance.MyRigibody.velocity = Vector2.zero;
+	override public void OnStateEnter (Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+	{
+		animator.GetComponent<Character> ().Shoot = true;
+		animator.SetFloat ("speed", 0);
+
+		if (animator.tag == "Player") {
+			if (Player.Instance.OnGround) {
+				//Debug.Log ("caonima");
+				Player.Instance.MyRigibody.velocity = Vector2.zero;
+			}
 		}
 	}
 

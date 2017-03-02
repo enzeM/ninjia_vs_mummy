@@ -20,12 +20,13 @@ public class Player : Character
 	[SerializeField]
 	private Slider healthSlider;
 	private int curHealth;
+
 	public override void Death ()
 	{
 		MyRigibody.velocity = Vector2.zero;
-		MyAnimator.SetTrigger ("Idle");
-		health = 50;
-		transform.position = startPos;
+		MyAnimator.SetTrigger ("idle");
+		curHealth = health;
+		//transform.position = startPos;
 	}
 	public event DeadEventHandler Dead;
 
@@ -127,8 +128,7 @@ public class Player : Character
 	void Update () 
 	{
 		if(IsDead){
-			MyRigibody.velocity = Vector2.zero;
-			transform.position = startPos;
+			Death ();
 		}
 		if (!TakingDamage && !IsDead) {
 			HandleInput ();
@@ -181,7 +181,7 @@ public class Player : Character
 		{
 			MyAnimator.SetBool ("land", true);
 		}
-		if(!Attack && !Slide && (OnGround || airControl))
+		if(!Attack && !Shoot && !Slide && (OnGround || airControl))
 		{
 			MyRigibody.velocity = new Vector2 (horizontal * moveSpeed, MyRigibody.velocity.y);
 		}
