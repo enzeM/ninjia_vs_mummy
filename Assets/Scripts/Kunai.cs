@@ -10,7 +10,8 @@ public class Kunai : MonoBehaviour
 	private float speed;
 	[SerializeField]
 	private int weaponDamage;
-
+	[SerializeField]
+	private string attackTarget;
 
 	void Start() 
 	{
@@ -30,5 +31,13 @@ public class Kunai : MonoBehaviour
 	void OnBecameInvisible()
 	{
 		Destroy (gameObject);
+	}
+
+	void OnTriggerEnter2D (Collider2D collider) 
+	{
+		if (collider.CompareTag(attackTarget))
+		{
+			Destroy (this.gameObject);
+		}
 	}
 }

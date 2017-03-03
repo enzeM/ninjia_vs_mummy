@@ -159,6 +159,10 @@ public class Player : Character
 		}
 		healthSlider.value = curHealth;
 	}
+	public void HpUp()
+	{
+		curHealth += 10;
+	}
 	private bool IsGrounded()
 	{
 		if(MyRigibody.velocity.y <= 0)

@@ -87,8 +87,8 @@ public abstract class WeakEnemy : MonoBehaviour
 
 	private void TakeDamage ()
 	{
+		enemyHealth -= 10;
 		if(!IsDead){
-			enemyHealth -= 10;
 			enemyHealthSlider.gameObject.SetActive(true);
 			enemyHealthSlider.value = enemyHealth;
 			//Debug.Log (health);
@@ -102,13 +102,13 @@ public abstract class WeakEnemy : MonoBehaviour
 	}
 
 	private IEnumerator Die () {
-		yield return new WaitForSeconds(5f);
+		yield return new WaitForSeconds(1f);
 		Destroy(gameObject);
 	}
 
 	public void LookAtTarget ()
 	{
-		if(! IsDead) 
+		if(!IsDead) 
 		{
 			//if player is in enemy's attack area, 
 			//1. face to player if not
