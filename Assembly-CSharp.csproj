@@ -57,14 +57,14 @@
      <Compile Include="Assets\AnimationBehaviours\SlideBehaviour.cs" />
      <Compile Include="Assets\Scripts\Accelerator.cs" />
      <Compile Include="Assets\Scripts\Character.cs" />
-     <Compile Include="Assets\Scripts\Enemy.cs" />
-     <Compile Include="Assets\Scripts\EnemySight.cs" />
      <Compile Include="Assets\Scripts\EnemyState\IEnemyState.cs" />
      <Compile Include="Assets\Scripts\EnemyState\IdleState.cs" />
      <Compile Include="Assets\Scripts\EnemyState\MeleeState.cs" />
      <Compile Include="Assets\Scripts\EnemyState\PatrolState.cs" />
      <Compile Include="Assets\Scripts\EnemyState\RangedState.cs" />
      <Compile Include="Assets\Scripts\FallingTile.cs" />
+     <Compile Include="Assets\Scripts\GirlNinja\Enemy.cs" />
+     <Compile Include="Assets\Scripts\GirlNinja\EnemySight.cs" />
      <Compile Include="Assets\Scripts\IgnoreCollision.cs" />
      <Compile Include="Assets\Scripts\Kunai.cs" />
      <Compile Include="Assets\Scripts\LevelManager.cs" />
@@ -73,7 +73,8 @@
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\Spike.cs" />
      <Compile Include="Assets\Scripts\WeakEnemy\WeakEnemy.cs" />
-     <Compile Include="Assets\Scripts\WeakEnemy\Zombie.cs" />
+     <Compile Include="Assets\Scripts\ZombieBoy\EnemySight1.cs" />
+     <Compile Include="Assets\Scripts\ZombieBoy\Zombie.cs" />
      <Compile Include="Assets\Scripts\platformController.cs" />
      <Compile Include="Assets\Scripts\viewController.cs" />
  <Reference Include="UnityEngine.Analytics">

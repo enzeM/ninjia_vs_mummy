@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class WeakEnemy : MonoBehaviour 
 {
@@ -8,46 +9,45 @@ public abstract class WeakEnemy : MonoBehaviour
 	[SerializeField]
 	private int enemyHealth;
 
-	public int enemyMoveSpeed;
-
 	//attacking
 	[SerializeField]
-	private float prepareAttackTime;
-	private float startAttackTime;
-	private float nextAttackTime;
+	public float prepareAttackTime;
+	public float startAttackTime;
+	public float nextAttackTime;
+	public GameObject target;
 
 	//facing
 	[SerializeField]
 	private GameObject enemyGraphic;
-	public bool faceRight {get; private set;}
-	private bool canFlip;
+	public bool faceRight { get; private set; }
+	public bool canFlip;
 	private float flipFrequence;
 	private float nextFlipTime;
 
+	//enemy damage & die
+	[SerializeField]
+	private string damageSources;
+	[SerializeField]
+	private Slider enemyHealthSlider;
+	public bool IsDead {
+		get {
+			return enemyHealth <= 0;
+		}
+	}
+
 
 	//melee attack or long-range attack 
-	public bool Attack 
-	{
-		get;
-		set;
-	}
+	public bool Attack { get; set; }
 
-	public Animator EnemyAnimator 
-	{
-		get;
-		private set;
-	}	
+	public Animator EnemyAnimator { get; private set; }
 
-	public Rigidbody2D EnemyBody 
-	{
-		get;
-		private set;
-	}
+	public Rigidbody2D EnemyBody { get; private set; }
 
 	public virtual void Start () 
 	{
 		EnemyAnimator = GetComponentInChildren<Animator> ();
 		EnemyBody = GetComponent<Rigidbody2D> ();
+		//EnemyBody = GetComponentInChildren<Rigidbody2D> ();
 
 		faceRight = true;			
 		canFlip = true;
@@ -73,48 +73,75 @@ public abstract class WeakEnemy : MonoBehaviour
 
 	void OnTriggerEnter2D (Collider2D collider)
 	{
+		
+		HandleDamage (collider);
+	}
+
+	private void HandleDamage (Collider2D collider) 
+	{
+		if(collider.CompareTag(damageSources))
+		{
+			TakeDamage ();
+		}
+	}
+
+	private void TakeDamage ()
+	{
+		enemyHealth -= 10;
+		enemyHealthSlider.gameObject.SetActive(true);
+		enemyHealthSlider.value = enemyHealth;
+		if(!IsDead){
+			//Debug.Log (health);
+			EnemyAnimator.SetTrigger ("damage");
+		}
+		else{
+			EnemyAnimator.SetTrigger ("die");
+		}
+	}
+
+	public void LookAtTarget ()
+	{
 		//if player is in enemy's attack area, 
 		//1. face to player if not
 		//2. prepare attack
 		//3. toward player or shoot player
-		if(collider.CompareTag ("Player")) 
+		float targetPosX = target.transform.position.x;
+		float myPosX = this.transform.position.x;
+		if(targetPosX > myPosX & ! faceRight)
 		{
-			float targetPosX = collider.gameObject.transform.position.x;
-			float myPosX = this.transform.position.x;
-			if(targetPosX > myPosX & !faceRight)
-			{
-				EnemyFlip();
-			}
-			else if (targetPosX < myPosX && faceRight)
-			{
-				EnemyFlip();
-			}
-			canFlip = false;
-			startAttackTime = prepareAttackTime + Time.time;
-			EnemyAnimator.SetTrigger ("prepareAttack");
+			EnemyFlip();
 		}
+		else if (targetPosX < myPosX && faceRight)
+		{
+			EnemyFlip();
+		}
+		canFlip = false;
+		startAttackTime = prepareAttackTime + Time.time;
+		EnemyAnimator.SetTrigger ("prepareAttack");
 	}
 
-	void OnTriggerStay2D (Collider2D collider)
+
+	public void AttackTarget ()
 	{
-		if(collider.CompareTag ("Player") && startAttackTime <= Time.time)
+		if(Time.time >= startAttackTime)
 		{
 			EnemyAttack (); //override attack based on enemy's characteristics
 			canFlip = false; //ensure canFlip always false if player is in enemy's attack region
 		}
 	}
 
-	void OnTriggerExit2D (Collider2D collider)
+	public void TargetExit ()
 	{
 		print("exit");
 		canFlip = true;	
 		EnemyBody.velocity = new Vector2 (0f, 0f);
+		print(EnemyBody.velocity);
 		EnemyAnimator.SetBool("attack", false);
 	}
 
-	void Update () {
+	void Update () 
+	{
 		EnemyPatrol ();
-		print(canFlip);
 	}
 
 	private void EnemyPatrol ()

@@ -24,8 +24,8 @@ public class Player : Character
 	public override void Death ()
 	{
 		MyRigibody.velocity = Vector2.zero;
-		MyAnimator.SetTrigger ("idle");
-		curHealth = health;
+		//MyAnimator.SetTrigger ("idle");
+		//curHealth = health;
 		//transform.position = startPos;
 	}
 	public event DeadEventHandler Dead;
