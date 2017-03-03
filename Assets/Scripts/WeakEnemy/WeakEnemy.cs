@@ -45,10 +45,10 @@ public abstract class WeakEnemy : MonoBehaviour
 
 	public virtual void Start () 
 	{
-		EnemyAnimator = GetComponentInChildren<Animator> ();
+		EnemyAnimator = GetComponent<Animator> ();
 		EnemyBody = GetComponent<Rigidbody2D> ();
 		//EnemyBody = GetComponentInChildren<Rigidbody2D> ();
-
+		enemyHealthSlider.maxValue = enemyHealth;
 		faceRight = true;			
 		canFlip = true;
 		flipFrequence = 5f;
@@ -87,43 +87,53 @@ public abstract class WeakEnemy : MonoBehaviour
 
 	private void TakeDamage ()
 	{
-		enemyHealth -= 10;
-		enemyHealthSlider.gameObject.SetActive(true);
-		enemyHealthSlider.value = enemyHealth;
 		if(!IsDead){
+			enemyHealth -= 10;
+			enemyHealthSlider.gameObject.SetActive(true);
+			enemyHealthSlider.value = enemyHealth;
 			//Debug.Log (health);
 			EnemyAnimator.SetTrigger ("damage");
 		}
 		else{
 			EnemyAnimator.SetTrigger ("die");
+			EnemyBody.velocity = Vector2.zero;
+			StartCoroutine(Die());
 		}
+	}
+
+	private IEnumerator Die () {
+		yield return new WaitForSeconds(5f);
+		Destroy(gameObject);
 	}
 
 	public void LookAtTarget ()
 	{
-		//if player is in enemy's attack area, 
-		//1. face to player if not
-		//2. prepare attack
-		//3. toward player or shoot player
-		float targetPosX = target.transform.position.x;
-		float myPosX = this.transform.position.x;
-		if(targetPosX > myPosX & ! faceRight)
+		if(! IsDead) 
 		{
-			EnemyFlip();
+			//if player is in enemy's attack area, 
+			//1. face to player if not
+			//2. prepare attack
+			//3. toward player or shoot player
+			float targetPosX = target.transform.position.x;
+			float myPosX = this.transform.position.x;
+			if(targetPosX > myPosX & ! faceRight)
+			{
+				EnemyFlip();
+			}
+			else if (targetPosX < myPosX && faceRight)
+			{
+				EnemyFlip();
+			}
+			canFlip = false;
+			startAttackTime = prepareAttackTime + Time.time;
+			EnemyAnimator.SetTrigger ("prepareAttack");
 		}
-		else if (targetPosX < myPosX && faceRight)
-		{
-			EnemyFlip();
-		}
-		canFlip = false;
-		startAttackTime = prepareAttackTime + Time.time;
-		EnemyAnimator.SetTrigger ("prepareAttack");
 	}
 
 
 	public void AttackTarget ()
 	{
-		if(Time.time >= startAttackTime)
+		if(Time.time >= startAttackTime && !IsDead)
 		{
 			EnemyAttack (); //override attack based on enemy's characteristics
 			canFlip = false; //ensure canFlip always false if player is in enemy's attack region
@@ -132,16 +142,24 @@ public abstract class WeakEnemy : MonoBehaviour
 
 	public void TargetExit ()
 	{
-		print("exit");
-		canFlip = true;	
-		EnemyBody.velocity = new Vector2 (0f, 0f);
-		print(EnemyBody.velocity);
-		EnemyAnimator.SetBool("attack", false);
+		if(! IsDead) 
+		{
+			print("exit");
+			canFlip = true;	
+			EnemyBody.velocity = new Vector2 (0f, 0f);
+			print(EnemyBody.velocity);
+			EnemyAnimator.SetBool("attack", false);
+		}
 	}
 
 	void Update () 
 	{
 		EnemyPatrol ();
+
+		if(Player.Instance.curHealth <= 0)
+		{
+			TargetExit ();
+		}
 	}
 
 	private void EnemyPatrol ()

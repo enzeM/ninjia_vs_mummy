@@ -19,7 +19,7 @@ public class Player : Character
 	}
 	[SerializeField]
 	private Slider healthSlider;
-	private int curHealth;
+	public int curHealth {get; private set;}
 
 	public override void Death ()
 	{
