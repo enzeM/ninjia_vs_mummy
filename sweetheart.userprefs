@@ -1,19 +1,12 @@
-﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-<<<<<<< HEAD
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\WeakEnemy\ZombieBoy\Zombie.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\AnimationBehaviours\LandBehaviour.cs">
     <Files>
-      <File FileName="Assets\Scripts\WeakEnemy\WeakEnemy.cs" Line="101" Column="45" />
-      <File FileName="Assets\Scripts\WeakEnemy\ZombieGirl\ZombieGirl.cs" Line="61" Column="3" />
-      <File FileName="Assets\Scripts\EnemyState\PatrolState.cs" Line="43" Column="33" />
-      <File FileName="Assets\Scripts\WeakEnemy\ZombieBoy\Zombie.cs" Line="30" Column="20" />
-=======
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/WeakEnemy/WeakEnemy.cs">
-    <Files>
-      <File FileName="Assets/Scripts/ZombieBoy/Zombie.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/WeakEnemy/WeakEnemy.cs" Line="22" Column="26" />
-      <File FileName="Assets/Scripts/ZombieBoy/EnemySight1.cs" Line="10" Column="10" />
->>>>>>> 172c33531fb009a38119cbac84e2a8903a5d906b
+      <File FileName="Assets\Scripts\WeakEnemy\WeakEnemy.cs" Line="106" Column="3" />
+      <File FileName="Assets\Scripts\WeakEnemy\ZombieBoy\Zombie.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Player.cs" Line="194" Column="4" />
+      <File FileName="Assets\AnimationBehaviours\JumpBehaviour.cs" Line="19" Column="3" />
+      <File FileName="Assets\AnimationBehaviours\LandBehaviour.cs" Line="18" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

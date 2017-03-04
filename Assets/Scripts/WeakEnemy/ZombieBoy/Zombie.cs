@@ -72,7 +72,7 @@ public class Zombie : WeakEnemy
 
 	public override void TargetExit ()
 	{
-		base.TargetExit ();
+		EnemyBody.velocity = new Vector2 (0f, EnemyBody.velocity.y);
 		EnemyAnimator.ResetTrigger ("prepareAttack");
 		canFlip = true;
 		EnemyAnimator.SetBool ("attack", false);

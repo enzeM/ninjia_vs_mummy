@@ -103,7 +103,7 @@ public abstract class WeakEnemy : MonoBehaviour
 
 	public virtual void TargetExit ()
 	{
-		EnemyBody.velocity = new Vector2 (0f, 0f);
+		
 	}
 
 	void Update () 
