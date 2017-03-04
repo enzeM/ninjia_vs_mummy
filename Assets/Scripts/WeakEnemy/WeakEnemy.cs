@@ -12,15 +12,15 @@ public abstract class WeakEnemy : MonoBehaviour
 	//attacking
 	[SerializeField]
 	public float prepareAttackTime;
-	public float startAttackTime;
-	public float nextAttackTime;
+	private float startAttackTime;
+	private float nextAttackTime;
 	public GameObject target;
 
 	//facing
 	[SerializeField]
 	private GameObject enemyGraphic;
 	public bool faceRight { get; private set; }
-	public bool canFlip;
+	private bool canFlip;
 	private float flipFrequence;
 	private float nextFlipTime;
 
