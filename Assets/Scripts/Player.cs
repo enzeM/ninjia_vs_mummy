@@ -190,7 +190,7 @@ public class Player : Character
 			MyRigibody.velocity = new Vector2 (horizontal * moveSpeed, MyRigibody.velocity.y);
 		}
 
-		if(Jump && ((OnGround &&  MyRigibody.velocity.y < 0) || MyRigibody.velocity.y == 0))
+		if(Jump && OnGround)
 		{
 			MyRigibody.AddForce (new Vector2 (0, jumpForce));
 		}
