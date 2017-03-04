@@ -19,8 +19,7 @@ public class Spike : MonoBehaviour
 	{
 		if (collider.CompareTag("Player"))
 		{
-			
-			if(Player.Instance.GetHealth()> 0) 
+			if(!Player.Instance.IsDead) 
 			{
 				StartCoroutine (Player.Instance.TakeDamage ());
 			}
