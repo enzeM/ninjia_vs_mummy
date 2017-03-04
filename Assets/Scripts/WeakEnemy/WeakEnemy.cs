@@ -11,6 +11,7 @@ public abstract class WeakEnemy : MonoBehaviour
 
 	//define enemy move speed
 	[SerializeField]
+
 	protected int enemyMoveSpeed;
 
 	//define if the enemy have a target to catch
@@ -24,6 +25,10 @@ public abstract class WeakEnemy : MonoBehaviour
 		get; 
 		private set; 
 	}
+
+	public float prepareAttackTime;
+	private float startAttackTime;
+	private float nextAttackTime;
 
 	//enemy damage & die
 	[SerializeField]
