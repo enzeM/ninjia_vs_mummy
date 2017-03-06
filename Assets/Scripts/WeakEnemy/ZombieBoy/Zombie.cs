@@ -92,7 +92,7 @@ public class Zombie : WeakEnemy
 		}
 	}
 	public override IEnumerator Die () {
-		yield return new WaitForSeconds(3);
+		yield return new WaitForSeconds(1);
 		Player.Instance.immortal = false;
 		Destroy(gameObject);
 	}
