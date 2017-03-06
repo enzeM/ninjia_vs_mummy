@@ -99,7 +99,7 @@ public class Zombie : WeakEnemy
 		Player.Instance.immortal = false;
 		int randomNum = Random.Range (0, items.Length);
 		Vector3 pos = transform.position;
-		pos.y += 1;
+		//pos.y += 1;
 		if(items.Length!=0)
 			Instantiate (items[randomNum], pos, Quaternion.Euler (new Vector3 (0, 0, 0)));
 		Destroy(gameObject);

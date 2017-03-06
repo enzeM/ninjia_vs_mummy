@@ -19,7 +19,7 @@ public class HealthUp : MonoBehaviour {
 		if (collider.CompareTag("Player") && Player.Instance.curHealth < Player.Instance.health)
 		{
 			Player.Instance.HpUp();
-			Destroy (this.gameObject);
 		}
+		Destroy (this.gameObject);
 	}
 }
