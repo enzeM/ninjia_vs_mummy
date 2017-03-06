@@ -50,7 +50,7 @@ public class Player : Character
 			return curHealth <= 0;
 		}
 	}
-
+	public bool fightBoss;
 	public override IEnumerator TakeDamage ()
 	{
 		if (!immortal) {
@@ -66,7 +66,6 @@ public class Player : Character
 			} else {
 				MyAnimator.SetLayerWeight (1, 0);
 				MyAnimator.SetTrigger ("die");
-				GameOver ();
 				//let enemy know player is dead
 				OnDead ();
 			}
@@ -111,6 +110,7 @@ public class Player : Character
 	public override void Start () 
 	{
 		base.Start();
+		fightBoss = false;
 		MyRigibody = GetComponent<Rigidbody2D> ();		
 		spriteRenderer = GetComponent<SpriteRenderer> ();
 		defaultGravity = MyRigibody.gravityScale;
@@ -287,9 +287,7 @@ public class Player : Character
 		}
 	}
 	void OnBecameInvisible(){
-		GameOver ();
-	}
-	private void GameOver(){
-		Debug.Log ("You died");
+		if(!immortal)
+			curHealth = 0;
 	}
 }

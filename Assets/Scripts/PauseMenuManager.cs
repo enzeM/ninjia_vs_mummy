@@ -9,7 +9,10 @@ public class PauseMenuManager : MonoBehaviour {
 
 	[SerializeField]
 	private GameObject pauseMenuUI;
-
+	[SerializeField]
+	private GameObject gameoverMenuUI;
+	[SerializeField]
+	private GameObject bossMenuUI;
 	// Use this for initialization
 	void Start () {
 		isPause = false;
@@ -36,7 +39,13 @@ public class PauseMenuManager : MonoBehaviour {
 		} else {
 			Time.timeScale = 1;
 		}
+		if(Player.Instance.fightBoss){
+			Time.timeScale = 0;
+
+		}
 		pauseMenuUI.SetActive (isPause);
+		gameoverMenuUI.SetActive (Player.Instance.IsDead);
+		bossMenuUI.SetActive (Player.Instance.fightBoss);
 	}
 
 	//resume game
@@ -58,5 +67,10 @@ public class PauseMenuManager : MonoBehaviour {
 	//exit game
 	public void Quit() {
 		Application.Quit ();
+	}
+
+	public void LoadNextLevel() {
+		int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1; 
+		SceneManager.LoadScene(nextSceneIndex);
 	}
 }

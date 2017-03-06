@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 70e106ea0a142d34983a7ff07a702735
+timeCreated: 1488827854
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Papyrus LET
+  fontNames:
+  - Papyrus LET
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

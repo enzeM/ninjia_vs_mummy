@@ -66,6 +66,7 @@
      <Compile Include="Assets\Scripts\GirlNinja\EnemySight.cs" />
      <Compile Include="Assets\Scripts\IgnoreCollision.cs" />
      <Compile Include="Assets\Scripts\Items\Accelerator.cs" />
+     <Compile Include="Assets\Scripts\Items\Door.cs" />
      <Compile Include="Assets\Scripts\Items\HealthUp.cs" />
      <Compile Include="Assets\Scripts\Items\Spike.cs" />
      <Compile Include="Assets\Scripts\Items\monsterSpawn.cs" />

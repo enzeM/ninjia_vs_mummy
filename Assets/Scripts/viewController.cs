@@ -15,6 +15,8 @@ public class viewController : MonoBehaviour {
 	[SerializeField]
 	private float speed;
 	[SerializeField]
+	private int layerCount;
+	[SerializeField]
 	private GameObject[] prefabs;
 
 	private Transform target;
@@ -38,11 +40,12 @@ public class viewController : MonoBehaviour {
 
 	void initMap ()
 	{
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < layerCount; i++) {
 			Vector3 pos = new Vector3 (0, i * 15, 0);
-			int randomNum = Random.Range (0, prefabs.Length);
-			print (randomNum);
+			int randomNum = Random.Range (0, prefabs.Length - 1);
 			Instantiate (prefabs[randomNum], pos, Quaternion.Euler (new Vector3 (0, 0, 0)));
 		}
+		Vector3 bossPos = new Vector3 (0, layerCount * 15, 0);
+		Instantiate (prefabs[prefabs.Length - 1], bossPos, Quaternion.Euler (new Vector3 (0, 0, 0)));
 	}
 }
