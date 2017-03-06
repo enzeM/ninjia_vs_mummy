@@ -185,7 +185,7 @@ public class Player : Character
 		{
 			MyAnimator.SetBool ("land", true);
 		}
-		if(!Attack && !Shoot && !Slide && (OnGround || airControl))
+		if(!Attack && !Shoot && (OnGround || airControl))
 		{
 			MyRigibody.velocity = new Vector2 (horizontal * moveSpeed, MyRigibody.velocity.y);
 		}

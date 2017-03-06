@@ -16,6 +16,7 @@ public class PauseMenuManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		isPause = false;
+		gameoverMenuUI.SetActive (false);
 	}
 
 	// Update is called once per frame
@@ -43,9 +44,15 @@ public class PauseMenuManager : MonoBehaviour {
 			Time.timeScale = 0;
 
 		}
+		if(Player.Instance.IsDead)
+			StartCoroutine (DeathMenu());
 		pauseMenuUI.SetActive (isPause);
-		gameoverMenuUI.SetActive (Player.Instance.IsDead);
 		bossMenuUI.SetActive (Player.Instance.fightBoss);
+	}
+	public IEnumerator DeathMenu()
+	{
+		yield return new WaitForSeconds(1);
+		gameoverMenuUI.SetActive (Player.Instance.IsDead);
 	}
 
 	//resume game
