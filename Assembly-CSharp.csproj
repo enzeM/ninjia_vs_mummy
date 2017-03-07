@@ -55,6 +55,10 @@
      <Compile Include="Assets\AnimationBehaviours\LandBehaviour.cs" />
      <Compile Include="Assets\AnimationBehaviours\ShootBehaviour.cs" />
      <Compile Include="Assets\AnimationBehaviours\SlideBehaviour.cs" />
+     <Compile Include="Assets\Scripts\AmazingEnemy\AmazingEnemy.cs" />
+     <Compile Include="Assets\Scripts\AmazingEnemy\HeadTrigger.cs" />
+     <Compile Include="Assets\Scripts\AmazingEnemy\Sight.cs" />
+     <Compile Include="Assets\Scripts\AmazingEnemy\Zombie1.cs" />
      <Compile Include="Assets\Scripts\Character.cs" />
      <Compile Include="Assets\Scripts\EnemyState\IEnemyState.cs" />
      <Compile Include="Assets\Scripts\EnemyState\IdleState.cs" />

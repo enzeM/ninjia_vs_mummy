@@ -11,7 +11,6 @@ public abstract class WeakEnemy : MonoBehaviour
 
 	//define enemy move speed
 	[SerializeField]
-
 	protected int enemyMoveSpeed;
 
 	//define if the enemy have a target to catch

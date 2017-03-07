@@ -39,9 +39,9 @@ public class Player : Character
 
 	private IEnumerator IndicateImmortal(){
 		while(immortal){
-			spriteRenderer.enabled = false;
+			spriteRenderer.color = new Color(1, 1, 1, 0.01F);
 			yield return new WaitForSeconds (.1f);
-			spriteRenderer.enabled = true;
+			spriteRenderer.color = new Color(1, 1, 1, 1);
 			yield return new WaitForSeconds (.1f);
 		}
 	}
@@ -287,7 +287,6 @@ public class Player : Character
 		}
 	}
 	void OnBecameInvisible(){
-		if(!immortal)
-			curHealth = 0;
+		curHealth = 0;
 	}
 }

@@ -32,7 +32,7 @@ public class PatrolState : IEnemyState
 		if(other.tag == "Edge"){
 			enemy.ChangeDirection ();
 		}
-		if(other.tag == "Bullet")
+		if(other.tag == "PlayerDamage")
 		{
 			enemy.Target = Player.Instance.gameObject;
 		}
