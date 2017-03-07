@@ -150,6 +150,7 @@ public class Player : Character
 			HandleLayers ();
 		}
 		HandleHealth ();
+		Jump = false;
 	}
 	private void HandleHealth() 
 	{
@@ -265,6 +266,7 @@ public class Player : Character
 		}
 		if (Input.GetKeyDown (KeyCode.Space)) 
 		{
+			Jump = true;
 			MyAnimator.SetTrigger ("jump");
 		}
 		if(Input.GetKeyDown(KeyCode.LeftShift)) 

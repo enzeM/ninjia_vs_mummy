@@ -33,7 +33,10 @@ public abstract class WeakEnemy : MonoBehaviour
 	[SerializeField]
 	private string damageSources;
 	//what will happen when enemy take damage and die
-	public abstract void TakeDamage ();
+	public virtual void TakeDamage ()
+	{
+
+	}
 	public abstract IEnumerator Die ();
 
 	//define the slider that indicate the health of enemy

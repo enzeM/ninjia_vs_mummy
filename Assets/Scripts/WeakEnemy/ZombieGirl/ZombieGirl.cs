@@ -60,20 +60,6 @@ public class ZombieGirl : WeakEnemy {
 		
 	}
 
-	public override void TakeDamage ()
-	{
-//		enemyHealth -= 10;
-//		enemyHealthSlider.value = enemyHealth;
-//		if(!IsDead){
-//			enemyHealthSlider.gameObject.SetActive(true);
-//			EnemyAnimator.SetTrigger ("damage");
-//		}
-//		else{
-//			EnemyAnimator.SetTrigger ("die");
-//			EnemyBody.velocity = Vector2.zero;
-//			StartCoroutine(Die());
-//		}
-	}
 	public override IEnumerator Die () {
 		yield return new WaitForSeconds(3);
 		Player.Instance.immortal = false;
