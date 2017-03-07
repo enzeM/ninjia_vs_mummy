@@ -18,18 +18,25 @@ public class MovingTile : MonoBehaviour {
 	private float range;
 	[SerializeField]
 	private bool vertical;
-
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
 		tilePosX = this.transform.position.x;	
 		tilePosY = this.transform.position.y;
 		tilePosZ = this.transform.position.z;
 		upperLimit = new Vector2 (this.transform.position.x + range, this.transform.position.y + range);
 		lowerLimit = new Vector2 (this.transform.position.x - range, this.transform.position.y - range);
+		//randomly init direction of moving tile
+		int randDirection = Random.Range(0,2);
+		if (randDirection != 0) 
+		{
+			changeDirection = true;
+		} 
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () 
+	{
 		if(vertical) {
 			VerticalMovement ();
 		} else {
@@ -37,35 +44,53 @@ public class MovingTile : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionStay2D (Collision2D collision) {
-		if(collision.gameObject.name == "Player") {
+	// if player on the moving tile, set moving tile as player's transform parent
+	void OnCollisionStay2D (Collision2D collision) 
+	{
+		if(collision.gameObject.CompareTag("Player")) 
+		{
 			collision.transform.parent = this.transform;
+			print("stay");
 		}
 	}
 
-	void OnCollisionExit2D (Collision2D collision) {
+	//reset when player exit
+	void OnCollisionExit2D (Collision2D collision) 
+	{
 		collision.transform.parent = null;
 	}
 
-	private void HorizontalMovement() {
-		if(transform.position.x < lowerLimit.x || transform.position.x > upperLimit.x) {
+	//horizontal movement
+	private void HorizontalMovement() 
+	{
+		if(transform.position.x <= lowerLimit.x || transform.position.x >= upperLimit.x) 
+		{
 			changeDirection = !changeDirection;
 		}
-		if(changeDirection) {
+		if(changeDirection) 
+		{
 			tilePosX -= moveSpeed * Time.deltaTime;
-		} else {
+		} 
+		else 
+		{
 			tilePosX += moveSpeed * Time.deltaTime;
 		}
 		this.transform.position = new Vector3(tilePosX, tilePosY, tilePosZ);
 	}
 
-	private void VerticalMovement() {
-		if(transform.position.y < lowerLimit.y || transform.position.y > upperLimit.y) {
+	//vertical movement
+	private void VerticalMovement() 
+	{
+		if(transform.position.y <= lowerLimit.y || transform.position.y >= upperLimit.y) 
+		{
 			changeDirection = !changeDirection;
 		}
-		if(changeDirection) {
+		if(changeDirection) 
+		{
 			tilePosY -= moveSpeed * Time.deltaTime;
-		} else {
+		} 
+		else 
+		{
 			tilePosY += moveSpeed * Time.deltaTime;
 		}
 		this.transform.position = new Vector3(tilePosX, tilePosY, tilePosZ);
