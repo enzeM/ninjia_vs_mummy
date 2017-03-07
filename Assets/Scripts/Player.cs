@@ -274,11 +274,11 @@ public class Player : Character
 		//listening key status to generate glide param
 		if(Input.GetKey(KeyCode.W))
 		{
-			MyAnimator.SetTrigger ("glide");
+			MyAnimator.SetBool ("glide2", true);
 		}
 		if(Input.GetKeyUp(KeyCode.W))
 		{
-			MyAnimator.ResetTrigger ("glide");
+			MyAnimator.SetBool ("glide2", false);
 		}
 	}
 	public void OnDead(){
