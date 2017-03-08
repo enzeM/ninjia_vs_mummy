@@ -90,9 +90,6 @@ public class Player : Character
 	public Transform groundCheck;
 	public LayerMask whatIsGround; //define what is ground for player
 
-	//boost speed param, ensure speed allow to boost only once
-	private bool isBoost;
-
 	[SerializeField]
 	//how high the player can jump
 	private float jumpForce;
@@ -114,11 +111,12 @@ public class Player : Character
 		get;
 		set;
 	}
-
+	public int defaultSpeed;
 	// Use this for initialization
 	public override void Start () 
 	{
 		base.Start();
+		defaultSpeed = moveSpeed;
 		audio = GetComponent<AudioSource> ();
 		fightBoss = false;
 		MyRigibody = GetComponent<Rigidbody2D> ();		
@@ -130,8 +128,6 @@ public class Player : Character
 		healthSlider.value = curHealth;
 
 		startPos = transform.position;
-
-		isBoost = false;
 	}
 	
 	// Update is called once per frame
@@ -220,27 +216,15 @@ public class Player : Character
 
 
 	//boost move speed params
-	public int GetMoveSpeed() 
-	{
-		return this.moveSpeed;
+	public void BoostMoveSpeed (float aliveTime) {
+		this.moveSpeed *= 2;
+		StartCoroutine (resetSpeed (aliveTime));
 	}
-
-	public void BoostMoveSpeed () {
-		this.moveSpeed *= 2;	
-	}
-
-	public void setMoveSpeed(int moveSpeed)
-	{
-		this.moveSpeed = moveSpeed;
-	}
-
-	public bool IsBoost() {
-		return this.isBoost;
-	}
-
-	public void SetIsBoost(bool isBoost) 
-	{
-		this.isBoost = isBoost;
+	public IEnumerator resetSpeed (float aliveTime) {
+		print ("start");
+		yield return new WaitForSeconds (aliveTime);
+		this.moveSpeed = defaultSpeed;
+		print ("end");
 	}
 	public int GetHealth(){
 		return this.curHealth;

@@ -11,12 +11,6 @@ public class Spike : MonoBehaviour
 
 	void OnTriggerStay2D(Collider2D collider)
 	{
-		HandleHarm(collider);
-	}
-
-	//check player status frequently
-	void HandleHarm (Collider2D collider) 
-	{
 		if (collider.CompareTag("Player"))
 		{
 			if(!Player.Instance.IsDead) 

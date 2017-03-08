@@ -23,7 +23,7 @@ public abstract class Character : MonoBehaviour {
 	protected Transform shootPoint;
 	//move speed...
 	[SerializeField]
-	protected int moveSpeed;
+	public int moveSpeed;
 	//bullet or knife prefab
 	[SerializeField]
 	private GameObject bullet;
