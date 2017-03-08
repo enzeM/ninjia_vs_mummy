@@ -7,14 +7,14 @@ public class GlideBehaviour : StateMachineBehaviour {
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		if(Player.Instance.MyRigibody.velocity.y < 0){
-			Player.Instance.MyRigibody.gravityScale = 0.1f;
+			//Player.Instance.MyRigibody.gravityScale = 0.1f;
 		}
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-	//override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-	//
-	//}
+	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+		Player.Instance.MyRigibody.velocity = new Vector2 (Player.Instance.MyRigibody.velocity.x, -1);
+	}
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {

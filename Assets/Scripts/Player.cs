@@ -185,6 +185,7 @@ public class Player : Character
 		if(MyRigibody.velocity.y < 0)
 		{
 			MyAnimator.SetBool ("land", true);
+
 		}
 		if(!Attack && !Shoot && (OnGround || airControl))
 		{
@@ -274,9 +275,13 @@ public class Player : Character
 			MyAnimator.SetTrigger ("slide");
 		}
 		//listening key status to generate glide param
-		if(Input.GetKey(KeyCode.W))
+		if(Input.GetKey(KeyCode.W) && !OnGround)
 		{
 			MyAnimator.SetBool ("glide2", true);
+		}
+		if(Input.GetKey(KeyCode.W) && OnGround)
+		{
+			MyAnimator.SetBool ("glide2", false);
 		}
 		if(Input.GetKeyUp(KeyCode.W))
 		{
