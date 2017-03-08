@@ -17,6 +17,7 @@ public class Player : Character
 			return instance;
 		}
 	}
+	public AudioClip jump;
 	[SerializeField]
 	private Slider healthSlider;
 	public int curHealth {get; private set;}
@@ -194,6 +195,7 @@ public class Player : Character
 
 		if(Jump && OnGround)
 		{
+			AudioSource.PlayClipAtPoint (jump, transform.position);
 			MyRigibody.AddForce (new Vector2 (0, jumpForce));
 		}
 		MyAnimator.SetFloat ("speed", Mathf.Abs (horizontal));
