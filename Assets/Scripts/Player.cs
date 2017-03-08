@@ -17,7 +17,9 @@ public class Player : Character
 			return instance;
 		}
 	}
+	public AudioSource audio;
 	public AudioClip jump;
+	public AudioClip deathSound;
 	[SerializeField]
 	private Slider healthSlider;
 	public int curHealth {get; private set;}
@@ -67,6 +69,7 @@ public class Player : Character
 			} else {
 				MyAnimator.SetLayerWeight (1, 0);
 				MyAnimator.SetTrigger ("die");
+				immortal = true;
 				//let enemy know player is dead
 				OnDead ();
 			}
@@ -111,6 +114,7 @@ public class Player : Character
 	public override void Start () 
 	{
 		base.Start();
+		audio = GetComponent<AudioSource> ();
 		fightBoss = false;
 		MyRigibody = GetComponent<Rigidbody2D> ();		
 		spriteRenderer = GetComponent<SpriteRenderer> ();
@@ -195,7 +199,7 @@ public class Player : Character
 
 		if(Jump && OnGround)
 		{
-			AudioSource.PlayClipAtPoint (jump, transform.position);
+			audio.PlayOneShot(jump,1);
 			MyRigibody.AddForce (new Vector2 (0, jumpForce));
 		}
 		MyAnimator.SetFloat ("speed", Mathf.Abs (horizontal));

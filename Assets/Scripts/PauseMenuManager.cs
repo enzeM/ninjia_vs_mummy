@@ -44,8 +44,9 @@ public class PauseMenuManager : MonoBehaviour {
 			Time.timeScale = 0;
 
 		}
-		if(Player.Instance.IsDead)
+		if(Player.Instance.IsDead){
 			StartCoroutine (DeathMenu());
+		}
 		pauseMenuUI.SetActive (isPause);
 		bossMenuUI.SetActive (Player.Instance.fightBoss);
 	}
