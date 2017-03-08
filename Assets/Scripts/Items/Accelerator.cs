@@ -24,8 +24,8 @@ public class Accelerator : MonoBehaviour {
 			player.BoostMoveSpeed ();
 			player.SetIsBoost (true);
 			player.StartCoroutine (RevertMoveSpeed());	
-			Destroy (this.gameObject);
 		}
+		Destroy (this.gameObject);
 	}
 
 	//revert back to default speed after aliveTime of the accelerator
@@ -34,6 +34,5 @@ public class Accelerator : MonoBehaviour {
 		yield return new WaitForSeconds (aliveTime);
 		player.setMoveSpeed(playerDefaultSpeed);
 		player.SetIsBoost(false);
-		yield return 0;
 	}
 }

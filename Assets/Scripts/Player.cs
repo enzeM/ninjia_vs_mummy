@@ -162,7 +162,7 @@ public class Player : Character
 	}
 	public void HpUp()
 	{
-		curHealth += 10;
+		this.curHealth += 10;
 	}
 	private bool IsGrounded()
 	{

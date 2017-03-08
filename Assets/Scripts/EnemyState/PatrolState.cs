@@ -29,13 +29,7 @@ public class PatrolState : IEnemyState
 
 	public void OnTriggerEnter (Collider2D other)
 	{
-		if(other.tag == "Edge"){
-			enemy.ChangeDirection ();
-		}
-		if(other.tag == "PlayerDamage")
-		{
-			enemy.Target = Player.Instance.gameObject;
-		}
+		
 	}
 
 	private void Patrol()

@@ -16,7 +16,7 @@ public class HealthUp : MonoBehaviour {
 
 	void OnTriggerEnter2D (Collider2D collider) 
 	{
-		if (collider.CompareTag("Player") && Player.Instance.curHealth < Player.Instance.health)
+		if (collider.CompareTag("Player") && Player.Instance.GetHealth() < Player.Instance.health)
 		{
 			Player.Instance.HpUp();
 		}

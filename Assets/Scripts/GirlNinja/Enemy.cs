@@ -124,6 +124,13 @@ public class Enemy : Character {
 
 	public override void OnTriggerEnter2D(Collider2D other){
 		base.OnTriggerEnter2D (other);
-		currentState.OnTriggerEnter (other);
+		//currentState.OnTriggerEnter (other);
+		if(other.tag == "Edge"){
+			ChangeDirection ();
+		}
+		if(other.tag == "PlayerDamage")
+		{
+			Target = Player.Instance.gameObject;
+		}
 	}
 }

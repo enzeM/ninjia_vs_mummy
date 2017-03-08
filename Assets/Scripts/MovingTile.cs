@@ -50,7 +50,6 @@ public class MovingTile : MonoBehaviour {
 		if(collision.gameObject.CompareTag("Player")) 
 		{
 			collision.transform.parent = this.transform;
-			print("stay");
 		}
 	}
 
