@@ -13,6 +13,7 @@ public class ShootBehaviour : StateMachineBehaviour {
 		if (animator.tag == "Player") {
 			if (Player.Instance.OnGround) {
 				//Debug.Log ("caonima");
+				Player.Instance.audio.PlayOneShot (Player.Instance.shootSound, 1);
 				Player.Instance.MyRigibody.velocity = Vector2.zero;
 			}
 		}

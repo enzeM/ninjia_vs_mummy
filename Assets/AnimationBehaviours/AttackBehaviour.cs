@@ -11,6 +11,7 @@ public class AttackBehaviour : StateMachineBehaviour {
 		animator.SetFloat ("speed", 0);
 		if (animator.tag == "Player") {
 			if (Player.Instance.OnGround) {
+				Player.Instance.audio.PlayOneShot (Player.Instance.meleeSound, 1);
 				Player.Instance.MyRigibody.velocity = Vector2.zero;
 			}
 		}

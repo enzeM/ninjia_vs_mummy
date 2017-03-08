@@ -8,6 +8,8 @@ public class SlideBehaviour : StateMachineBehaviour {
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		Player.Instance.Slide = true;
 		Player.Instance.immortal = true;
+		Player.Instance.audio.PlayOneShot (Player.Instance.slideSound, 1);
+	
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

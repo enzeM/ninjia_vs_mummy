@@ -20,6 +20,11 @@ public class Player : Character
 	public AudioSource audio;
 	public AudioClip jump;
 	public AudioClip deathSound;
+	public AudioClip runSound;
+	public AudioClip shootSound;
+	public AudioClip meleeSound;
+	public AudioClip hurtSound;
+	public AudioClip slideSound;
 	[SerializeField]
 	private Slider healthSlider;
 	public int curHealth {get; private set;}
@@ -300,6 +305,15 @@ public class Player : Character
 		}
 	}
 	void OnBecameInvisible(){
+		audio.PlayOneShot (deathSound, 1);
 		curHealth = 0;
+	}
+
+	public void PlayShootSound(){
+		Player.Instance.audio.PlayOneShot (Player.Instance.shootSound, 1);
+	}
+
+	public void PlayMeleeSound(){
+		Player.Instance.audio.PlayOneShot (Player.Instance.meleeSound, 1);
 	}
 }
