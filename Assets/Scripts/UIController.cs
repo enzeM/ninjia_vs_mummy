@@ -22,7 +22,7 @@ public class UIController : MonoBehaviour {
 	}
 
 	public void HardBtn(){
-		cameraSpeed = 0.5F;
+		cameraSpeed = 0.3F;
 		int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1; 
 		SceneManager.LoadScene(nextSceneIndex);
 	}
