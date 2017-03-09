@@ -24,8 +24,12 @@ public class BossLevel2 : MonoBehaviour {
 			}
 		}
 		if(killCount == bossNum){
-			PauseMenuManager.Instance.isPause = true;
+			StartCoroutine (PauseNow ());
 			winMenuUI.SetActive (true);
 		}
+	}
+	IEnumerator PauseNow(){
+		yield return new WaitForSeconds (1);
+		PauseMenuManager.Instance.isPause = true;
 	}
 }

@@ -12,11 +12,6 @@ public class Enemy : Character {
 	public override void Death ()
 	{
 		Destroy (gameObject);
-
-//		MyAnimator.ResetTrigger ("die");
-//		MyAnimator.SetTrigger ("idle");
-//		health = 30;
-//		transform.position = startPos;
 	}
 
 
@@ -37,7 +32,8 @@ public class Enemy : Character {
 		}
 		else{
 			MyAnimator.SetTrigger ("die");
-			yield return null;
+			yield return new WaitForSeconds(1);
+			Death ();
 		}
 	}
 

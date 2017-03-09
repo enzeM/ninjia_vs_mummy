@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DamageBehaviour : StateMachineBehaviour {
-
+	private float timer = 0;
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		animator.GetComponent<Character> ().TakingDamage = true;
 		animator.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
-		Player.Instance.audio.PlayOneShot (Player.Instance.hurtSound, 0.5F);
+		if (animator.tag == "Player") 
+			Player.Instance.audio.PlayOneShot (Player.Instance.hurtSound, 1);
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-	//override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-	//
-	//}
+//	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+//	}
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
