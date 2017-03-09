@@ -12,14 +12,13 @@ public class IntroductionController : MonoBehaviour {
 	[SerializeField]
 	private Text text;
 	//states
-	private enum State{
-		objective, inputSet, skip
+	private enum State {
+		objective, page1, page2, skip
 	}
 	//myState
 	private State myState;
 	// Use this for initialization
-	void Start ()
-	{
+	void Start () {
 		myState = State.objective;
 		retryBtn.SetActive (false);
 	}
@@ -33,10 +32,11 @@ public class IntroductionController : MonoBehaviour {
 		}
 		if (myState == State.objective) {
 			objective();
-		} else if (myState == State.inputSet) {
-			inputSet ();
+		} else if (myState == State.page1) {
+			pageOne ();
+		} else if (myState == State.page2) {
+			pageTwo ();
 		}
-
 	}
 
 	void objective(){
@@ -44,17 +44,30 @@ public class IntroductionController : MonoBehaviour {
 		"\nA hero from far far away kingdom was assigned to fight against the evil allies and rescue people from the Spring Land."+
 		"\nBefore starting the jurney, the hero must train ninjutsu from the ninja master";
 		if (Input.GetKeyDown (KeyCode.Return)) {
-			myState = State.inputSet;
+			myState = State.page1;
 		}
 	}
-	void inputSet(){
-		text.text ="Followings the game control to finish the game tutorial: "+
-		"\n\npress <left shift> to slide when you are moving"+
-		"\npress <A> to the left, <B> to the right"+
-		"\npress <Space> to jump"+
-		"\nkeep pressing <W> to glide when you are falling or landing to the ground"+
-		"\npress <J> to melee attack, <K> to throw kunai."+
-		"\nyou can try melee attack and throw kunai when you are jumping"+
-		"\n\nPress <Enter> to continue";
+
+	void pageOne() {
+		text.text ="Please follow the instruction to finish your training: "+
+			"\n\nLesson 1: Basic Movement:"+
+			"\nPress <A> \"MOVE\" to the left, <B> to the right"+
+			"\nPress <Space> to \"JUMP\""+
+			"\nPress <J> to \"MELEE ATTACK\", <K> to \"THROW KUNAI\".";
+		if (Input.GetKeyDown (KeyCode.Return)) {
+			myState = State.page2;
+		}
+	}
+
+	void pageTwo() {
+		text.text ="Please follow the instruction to finish your training: "+
+			"\n\nLesson 2: Advance Movement:"+
+			"\n\nYou can ATTACK WHEN YOU ARE JUMPING: <SPACE> + <J> or <SPACE> + <K>"+
+			"\nKeep pressing <W> to \"GLIDE\" when you are falling or landing to the ground"+
+			"\nPress <LEFT SHIFT> to \"SLIDE\" when you are moving"+
+			"\nSLIDING can help you AVOID HARMFUL OBSTACLE!";
+		if (Input.GetKeyDown (KeyCode.Return)) {
+			SceneManager.LoadScene("DifficultySetting");
+		}
 	}
 }
