@@ -11,7 +11,7 @@ public class viewController : MonoBehaviour {
 	private float xMin;
 	[SerializeField]
 	private float yMin;
-	[SerializeField]
+
 	private float speed;
 	[SerializeField]
 	private int layerCount;
@@ -26,6 +26,7 @@ public class viewController : MonoBehaviour {
 		myCamera = GameObject.Find ("Main Camera");
 		yMax = layerCount * 15 + 3;
 		initMap ();
+		speed = UIController.cameraSpeed;
 	}
 	void Update(){
 		yMin += speed * Time.deltaTime;
