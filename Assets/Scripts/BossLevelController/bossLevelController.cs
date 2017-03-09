@@ -25,7 +25,7 @@ public class bossLevelController : MonoBehaviour {
 			}
 		}
 		if(killCount == bossNum){
-			Time.timeScale = 0;
+			PauseMenuManager.Instance.isPause = true;
 			winMenuUI.SetActive (true);
 		}
 	}

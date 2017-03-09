@@ -4,8 +4,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PauseMenuManager : MonoBehaviour {
+	private static PauseMenuManager instance;
 
-	private bool isPause;
+	public static PauseMenuManager Instance {
+		get {
+			if (instance == null) {
+				instance = GameObject.FindObjectOfType<PauseMenuManager> ();
+			}
+			return instance;
+		}
+	}
+	public bool isPause;
 
 	[SerializeField]
 	private GameObject pauseMenuUI;

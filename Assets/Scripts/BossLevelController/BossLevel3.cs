@@ -26,9 +26,8 @@ public class BossLevel3 : MonoBehaviour {
 				}
 			}
 		}
-
 		if(killCount == bossNum){
-			Time.timeScale = 0;
+			PauseMenuManager.Instance.isPause = true;
 			winMenuUI.SetActive (true);
 		}
 	}
