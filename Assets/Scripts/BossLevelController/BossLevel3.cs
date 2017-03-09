@@ -28,11 +28,12 @@ public class BossLevel3 : MonoBehaviour {
 		}
 		if(killCount == bossNum){
 			StartCoroutine (PauseNow ());
-			winMenuUI.SetActive (true);
 		}
 	}
 	IEnumerator PauseNow(){
 		yield return new WaitForSeconds (1);
-		PauseMenuManager.Instance.isPause = true;
+		Time.timeScale = 0;
+		winMenuUI.SetActive (true);
 	}
+
 }
