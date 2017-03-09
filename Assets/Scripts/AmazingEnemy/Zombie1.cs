@@ -59,7 +59,7 @@ public class Zombie1 : AmazingEnemy {
 	public IEnumerator Patrol ()
 	{
 		MyAnimator.SetFloat ("speed", 1);
-		if((facingRight && transform.position.x <=rightEdge.position.x) || (!facingRight && transform.position.x >=leftEdge.position.x))
+		//if((facingRight && transform.position.x <=rightEdge.position.x) || (!facingRight && transform.position.x >=leftEdge.position.x))
 			transform.Translate (GetDirection () * (walkSpeed * Time.deltaTime));
 		if(target!= null){
 			LookAtTarget ();
@@ -73,7 +73,7 @@ public class Zombie1 : AmazingEnemy {
 	public void Catch ()
 	{
 		MyAnimator.SetFloat ("runSpeed", 1);
-		if((facingRight && transform.position.x <= rightEdge.position.x) || (!facingRight && transform.position.x >= leftEdge.position.x))
+		//if((facingRight && transform.position.x <= rightEdge.position.x) || (!facingRight && transform.position.x >= leftEdge.position.x))
 			transform.Translate (GetDirection () * (runSpeed * Time.deltaTime));
 		if(target == null){
 			myState = STATE.Idle;

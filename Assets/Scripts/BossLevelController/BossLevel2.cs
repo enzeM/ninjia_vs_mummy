@@ -25,6 +25,7 @@ public class BossLevel2 : MonoBehaviour {
 		}
 		if(killCount == bossNum){
 			winMenuUI.SetActive (true);
+			Time.timeScale = 0;
 		}
 	}
 }

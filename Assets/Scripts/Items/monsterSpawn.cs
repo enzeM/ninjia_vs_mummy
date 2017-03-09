@@ -20,7 +20,7 @@ public class monsterSpawn : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D collider)
 	{
-		int randomNum = Random.Range (0, 3);
+		int randomNum = Random.Range (0, monsters.Count);
 		Instantiate (monsters[randomNum], spawnPos.position, Quaternion.Euler (new Vector3 (0, 0, 0)));
 		Destroy (this.gameObject);
 	}
