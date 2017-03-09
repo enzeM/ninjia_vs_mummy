@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DamageBehaviour : StateMachineBehaviour {
-	private float timer = 0;
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+		//set TakingDamage value to true
 		animator.GetComponent<Character> ().TakingDamage = true;
+		//stop moving when this character is taking damage
 		animator.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
+		//if the character is player, then play hurt sound
 		if (animator.tag == "Player") 
 			Player.Instance.audio.PlayOneShot (Player.Instance.hurtSound, 1);
 	}
@@ -18,6 +20,7 @@ public class DamageBehaviour : StateMachineBehaviour {
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+		//reset value
 		animator.GetComponent<Character> ().TakingDamage = false;
 	}
 

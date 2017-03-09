@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/**
+	interface: enmey have different state
+	idle,melee,ranged and patrol
+*/
 public interface IEnemyState
 {
 	void Execute();

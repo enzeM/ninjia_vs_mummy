@@ -7,12 +7,12 @@ public class ShootBehaviour : StateMachineBehaviour {
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter (Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
+		//set shoot value to true and set "speed" to 0 so than make the character stop moving when it is shooting
 		animator.GetComponent<Character> ().Shoot = true;
 		animator.SetFloat ("speed", 0);
-
+		//if the character is player and it is on the ground, then play shoot sound
 		if (animator.tag == "Player") {
 			if (Player.Instance.OnGround) {
-				//Debug.Log ("caonima");
 				Player.Instance.audio.PlayOneShot (Player.Instance.shootSound, 1);
 				Player.Instance.MyRigibody.velocity = Vector2.zero;
 			}
@@ -26,6 +26,7 @@ public class ShootBehaviour : StateMachineBehaviour {
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+		//reset values
 		animator.GetComponent<Character>().Shoot = false;
 		animator.ResetTrigger ("attack");
 		animator.ResetTrigger ("throw");

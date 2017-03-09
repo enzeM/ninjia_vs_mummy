@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Zombie1 : AmazingEnemy {
-
+	//immortal
 	private bool immortal = false;
-
+	//immortal duration
 	[SerializeField]private float immortalTime;
-
+	//sprite
 	private SpriteRenderer spriteRenderer;
 
 	// Use this for initialization
@@ -32,7 +32,7 @@ public class Zombie1 : AmazingEnemy {
 			break;
 		}
 	}
-
+	//indicate immortal
 	private IEnumerator IndicateImmortal(){
 		while(immortal){
 			spriteRenderer.enabled = false;
@@ -41,7 +41,7 @@ public class Zombie1 : AmazingEnemy {
 			yield return new WaitForSeconds (.1f);
 		}
 	}
-
+	//idle state
 	public IEnumerator Idle ()
 	{
 		MyAnimator.SetFloat ("speed", 0);
@@ -55,7 +55,7 @@ public class Zombie1 : AmazingEnemy {
 			myState = STATE.Patrol;
 		}
 	}
-
+	//patrol state
 	public IEnumerator Patrol ()
 	{
 		MyAnimator.SetFloat ("speed", 1);
@@ -69,7 +69,7 @@ public class Zombie1 : AmazingEnemy {
 			myState = STATE.Idle;
 		}
 	}
-
+	//catch state
 	public void Catch ()
 	{
 		MyAnimator.SetFloat ("runSpeed", 1);
@@ -79,7 +79,7 @@ public class Zombie1 : AmazingEnemy {
 			myState = STATE.Idle;
 		}
 	}
-
+	//take damage (override)
 	public override IEnumerator TakeDamage (int atk)
 	{
 		if (!immortal) {

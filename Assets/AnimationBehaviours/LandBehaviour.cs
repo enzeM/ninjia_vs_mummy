@@ -12,8 +12,10 @@ public class LandBehaviour : StateMachineBehaviour {
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	override public void OnStateUpdate (Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
+		//if play is on the ground, set bool value "land" to false, so that stop landing animation
 		if (Player.Instance.OnGround) {
 			animator.SetBool ("land", false);
+			//reset trigger "jump" to make sure the character can jump after landing
 			animator.ResetTrigger ("jump");
 		}
 	}

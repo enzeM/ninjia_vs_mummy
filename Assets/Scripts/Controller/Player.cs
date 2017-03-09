@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+//dead event which can inform enemies that player is dead
 public delegate void DeadEventHandler();
-
+/**
+	Player controller
+*/
 public class Player : Character
 {
+	//create player instance
 	private static Player instance;
 
 	public static Player Instance {
@@ -17,6 +20,7 @@ public class Player : Character
 			return instance;
 		}
 	}
+	//player sound effects
 	public AudioSource audio;
 	public AudioClip jump;
 	public AudioClip deathSound;
@@ -25,26 +29,25 @@ public class Player : Character
 	public AudioClip meleeSound;
 	public AudioClip hurtSound;
 	public AudioClip slideSound;
+	//player health slider
 	[SerializeField]
 	private Slider healthSlider;
+	//player current health
 	public int curHealth {get; private set;}
-
+	//override function: what will happen when player dead
 	public override void Death ()
 	{
-		MyRigibody.velocity = Vector2.zero;
-		//MyAnimator.SetTrigger ("idle");
-		//curHealth = health;
-		//transform.position = startPos;
 	}
+	//dead event handler
 	public event DeadEventHandler Dead;
-
+	//bool value to indicate if player dead
 	public bool immortal = false;
-
+	//immortal duration
 	[SerializeField]
 	private float immortalTime;
-
+	//player sprite
 	private SpriteRenderer spriteRenderer;
-
+	//set the color for indicate immortal
 	private IEnumerator IndicateImmortal(){
 		while(immortal){
 			spriteRenderer.color = new Color(1, 1, 1, 0.01F);
@@ -53,13 +56,18 @@ public class Player : Character
 			yield return new WaitForSeconds (.1f);
 		}
 	}
+	//Return: if current health is less than 0: true 
+	//		  if current health is larger than 0: false
 	public override bool IsDead {
 		get {
 			return curHealth <= 0;
 		}
 	}
+	//if player enter to the door
 	public bool fightBoss;
+	//if player kill all bosses
 	public bool winBoss;
+	//when player take damage, what will happen (override)
 	public override IEnumerator TakeDamage ()
 	{
 		if (!immortal) {
@@ -81,42 +89,45 @@ public class Player : Character
 			}
 		}	
 	}
-
+	//default garvity scale: 1
 	public float defaultGravity;
-
+	//if the player can move when he jumped
 	[SerializeField]
 	private bool airControl;
-
+	//check if the player is on the ground
 	private float groundedRaduis = 0.2f;
 	public Transform groundCheck;
 	public LayerMask whatIsGround; //define what is ground for player
-
-	[SerializeField]
 	//how high the player can jump
+	[SerializeField]
 	private float jumpForce;
-
+	//rigibody2d
 	public Rigidbody2D MyRigibody{
 		get;
 		set;
 	}
-
+	//Slide
 	public bool Slide{
 		get;
 		set;
 	}
+	//Jump
 	public bool Jump{
 		get;
 		set;
 	}
+	//OnGround
 	public bool OnGround{
 		get;
 		set;
 	}
+	//default move speed : 4
 	public int defaultSpeed;
 	// Use this for initialization
 	public override void Start () 
 	{
 		base.Start();
+		//init values
 		defaultSpeed = moveSpeed;
 		audio = GetComponent<AudioSource> ();
 		fightBoss = false;
@@ -133,10 +144,7 @@ public class Player : Character
 	
 	// Update is called once per frame
 	void Update () 
-	{
-		if(IsDead){
-			Death ();
-		}
+	{	
 		if (!TakingDamage && !IsDead) {
 			HandleInput ();
 		}
@@ -159,6 +167,7 @@ public class Player : Character
 		HandleHealth ();
 		Jump = false;
 	}
+	//update health slider each frame
 	private void HandleHealth() 
 	{
 		if(curHealth >= health)
@@ -167,10 +176,12 @@ public class Player : Character
 		}
 		healthSlider.value = curHealth;
 	}
+	//when player pick up the heart item, the health will be up
 	public void HpUp()
 	{
 		this.curHealth += 10;
 	}
+	//is on the ground ?
 	private bool IsGrounded()
 	{
 		if(MyRigibody.velocity.y <= 0)
@@ -186,7 +197,7 @@ public class Player : Character
 		}
 		return false;
 	}
-
+	//handle movement
 	private void HandleMovement(float horizontal) 
 	{
 		if(MyRigibody.velocity.y < 0)
@@ -221,10 +232,12 @@ public class Player : Character
 		this.moveSpeed *= 2;
 		StartCoroutine (resetSpeed (aliveTime));
 	}
+	//reset move speed
 	public IEnumerator resetSpeed (float aliveTime) {
 		yield return new WaitForSeconds (aliveTime);
 		this.moveSpeed = defaultSpeed;
 	}
+	//return: current health
 	public int GetHealth(){
 		return this.curHealth;
 	}
@@ -236,7 +249,7 @@ public class Player : Character
 			ChangeDirection ();
 		}	
 	}
-
+	//handle anmiator layer for ground and air
 	private void HandleLayers()
 	{
 		if(!OnGround)
@@ -248,7 +261,7 @@ public class Player : Character
 			MyAnimator.SetLayerWeight (1, 0);
 		}
 	}
-
+	//set input control
 	private void HandleInput() 
 	{
 		if (Input.GetKeyDown (KeyCode.J)) 
@@ -282,20 +295,22 @@ public class Player : Character
 			MyAnimator.SetBool ("glide2", false);
 		}
 	}
+	//on dead event
 	public void OnDead(){
 		if(Dead != null){
 			Dead ();
 		}
 	}
+	//if player fall down, set current health to 0
 	void OnBecameInvisible(){
 		audio.PlayOneShot (deathSound, 1);
 		curHealth = 0;
 	}
-
+	//play shoot sound
 	public void PlayShootSound(){
 		Player.Instance.audio.PlayOneShot (Player.Instance.shootSound, 1);
 	}
-
+	//play melee sound
 	public void PlayMeleeSound(){
 		Player.Instance.audio.PlayOneShot (Player.Instance.meleeSound, 1);
 	}

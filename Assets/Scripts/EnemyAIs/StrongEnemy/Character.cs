@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/**
+	abstract class: player and girl ninjia
+*/
 public abstract class Character : MonoBehaviour {
 	//deine start position of character
 	[SerializeField]

@@ -2,20 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+/**
+	this class is used to control pause menu
+	when click esc, pause menu display
+	when player enter door, then boosMenu display
+	when player dead, gameover menu display
+	when player defeat all bosses, then win menu display
+*/
 public class PauseMenuManager : MonoBehaviour {
-	private static PauseMenuManager instance;
-
-	public static PauseMenuManager Instance {
-		get {
-			if (instance == null) {
-				instance = GameObject.FindObjectOfType<PauseMenuManager> ();
-			}
-			return instance;
-		}
-	}
-	public bool isPause;
-
+	//bool value : is paused
+	private bool isPause;
+	//bind menus
 	[SerializeField]
 	private GameObject pauseMenuUI;
 	[SerializeField]
@@ -26,8 +23,8 @@ public class PauseMenuManager : MonoBehaviour {
 	private GameObject winMenuUI;
 	// Use this for initialization
 	void Start () {
+		//init valuse
 		isPause = false;
-		gameoverMenuUI.SetActive (false);
 	}
 
 	// Update is called once per frame
@@ -62,6 +59,7 @@ public class PauseMenuManager : MonoBehaviour {
 			Time.timeScale = 0;
 		}
 	}
+	//delay to show gameove menu after player dead
 	public IEnumerator DeathMenu()
 	{
 		yield return new WaitForSeconds(1);
@@ -89,7 +87,7 @@ public class PauseMenuManager : MonoBehaviour {
 	public void Quit() {
 		Application.Quit ();
 	}
-
+	//load next level
 	public void LoadNextLevel() {
 		int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1; 
 		SceneManager.LoadScene(nextSceneIndex);

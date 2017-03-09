@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/**
+	weak enemy class for zombie boy and zombie girl
+*/
 public abstract class WeakEnemy : MonoBehaviour 
 {
 	//difine enemy's health

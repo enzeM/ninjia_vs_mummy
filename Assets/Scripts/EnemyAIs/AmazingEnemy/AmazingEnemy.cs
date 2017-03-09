@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/**
+	AmazingEnemy: abstract class for enemy
+*/
 public abstract class AmazingEnemy : MonoBehaviour {
 	public enum STATE{
 		Idle,
@@ -55,12 +57,12 @@ public abstract class AmazingEnemy : MonoBehaviour {
 
 	//facing
 	protected bool facingRight;
-
+	//animator
 	public Animator MyAnimator {
 		get;
 		private set;
 	}
-
+	//rigidbody
 	public Rigidbody2D MyRigidbody {
 		get;
 		private set;
@@ -77,27 +79,29 @@ public abstract class AmazingEnemy : MonoBehaviour {
 	void Update () {
 		
 	}
-
+	//change direction
 	protected void ChangeDirection()
 	{
 		facingRight = !facingRight;
 		transform.localScale = new Vector3 (transform.localScale.x * -1, transform.localScale.y);
 	}
-
+	//return: (vector2)right or (vector2)left 
 	protected Vector2 GetDirection()
 	{
 		return facingRight ? Vector2.right : Vector2.left;
 	}
 
 	public virtual void OnTriggerEnter2D(Collider2D other){
+		//take damage
 		if(damageSources.Contains(other.tag)){
 			StartCoroutine (TakeDamage (10));
 		}
+		//changedirection
 		if(other.tag == "Edge"){
 			ChangeDirection ();
 		}
 	}
-
+	//look at target
 	protected void LookAtTarget(){
 		if(target != null){
 			float xDir = target.transform.position.x - transform.position.x;
@@ -107,8 +111,9 @@ public abstract class AmazingEnemy : MonoBehaviour {
 			}
 		}
 	}
+	//take damage
 	public abstract IEnumerator TakeDamage (int atk);
-
+	//die
 	public virtual IEnumerator Die () {
 		yield return new WaitForSeconds(1);
 		Player.Instance.immortal = false;

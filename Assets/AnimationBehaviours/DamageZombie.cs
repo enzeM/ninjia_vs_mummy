@@ -11,6 +11,7 @@ public class DamageZombie : StateMachineBehaviour {
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+		//when the zombie is taking damage, stop it from moving around
 		animator.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
 	}
 

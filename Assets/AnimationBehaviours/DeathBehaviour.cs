@@ -4,24 +4,17 @@ using UnityEngine;
 
 public class DeathBehaviour : StateMachineBehaviour {
 
-	private float respawnTime = 5;
-	private float deathTimer;
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		deathTimer = 0;
+		//if the character is player, then play death sound when player dead
 		if (animator.tag == "Player") 
 			Player.Instance.audio.PlayOneShot (Player.Instance.deathSound, 0.5F);
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		deathTimer += Time.deltaTime;
-
-		if(deathTimer >= respawnTime){
-			animator.GetComponent<Character> ().Death ();
-		}
-	}
-
+//	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+//	}
+//
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	//override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 	//
