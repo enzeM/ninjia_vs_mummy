@@ -22,6 +22,8 @@ public class PauseMenuManager : MonoBehaviour {
 	private GameObject gameoverMenuUI;
 	[SerializeField]
 	private GameObject bossMenuUI;
+	[SerializeField]
+	private GameObject winMenuUI;
 	// Use this for initialization
 	void Start () {
 		isPause = false;
@@ -55,10 +57,15 @@ public class PauseMenuManager : MonoBehaviour {
 		}
 		pauseMenuUI.SetActive (isPause);
 		bossMenuUI.SetActive (Player.Instance.fightBoss);
+		if(Player.Instance.winBoss){
+			winMenuUI.SetActive (Player.Instance.winBoss);
+			Time.timeScale = 0;
+		}
 	}
 	public IEnumerator DeathMenu()
 	{
 		yield return new WaitForSeconds(1);
+		isPause = true;
 		gameoverMenuUI.SetActive (Player.Instance.IsDead);
 	}
 

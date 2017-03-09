@@ -59,6 +59,7 @@ public class Player : Character
 		}
 	}
 	public bool fightBoss;
+	public bool winBoss;
 	public override IEnumerator TakeDamage ()
 	{
 		if (!immortal) {

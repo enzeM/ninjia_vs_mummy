@@ -5,14 +5,11 @@ using UnityEngine;
 public class BossLevel3 : MonoBehaviour {
 	[SerializeField]
 	private List<TombStone> bossList;
-	[SerializeField]
-	private GameObject winMenuUI;
 	private int killCount = 0;
 	private int bossNum;
 	// Use this for initialization
 	void Start () {
 		bossNum = bossList.Count;
-		winMenuUI.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -27,13 +24,7 @@ public class BossLevel3 : MonoBehaviour {
 			}
 		}
 		if(killCount == bossNum){
-			StartCoroutine (PauseNow ());
+			Player.Instance.winBoss = true;
 		}
 	}
-	IEnumerator PauseNow(){
-		yield return new WaitForSeconds (1);
-		Time.timeScale = 0;
-		winMenuUI.SetActive (true);
-	}
-
 }
