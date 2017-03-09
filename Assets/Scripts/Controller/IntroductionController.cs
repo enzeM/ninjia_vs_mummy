@@ -5,9 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class IntroductionController : MonoBehaviour {
-	//retry button
-	[SerializeField]
-	private GameObject retryBtn;
 	//text
 	[SerializeField]
 	private Text text;
@@ -20,16 +17,14 @@ public class IntroductionController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		myState = State.objective;
-		retryBtn.SetActive (false);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		//print (myState);
-		if(Player.Instance.IsDead){
-			int currentSceneIndex = SceneManager.GetActiveScene ().buildIndex;
-			SceneManager.LoadScene (currentSceneIndex);
-		}
+//		if(Player.Instance.IsDead){
+//			int currentSceneIndex = SceneManager.GetActiveScene ().buildIndex;
+//			SceneManager.LoadScene (currentSceneIndex);
+//		}
 		if (myState == State.objective) {
 			objective();
 		} else if (myState == State.page1) {
@@ -51,7 +46,7 @@ public class IntroductionController : MonoBehaviour {
 	void pageOne() {
 		text.text ="Please follow the instruction to finish your training: "+
 			"\n\nLesson 1: Basic Movement:"+
-			"\nPress <A> \"MOVE\" to the left, <B> to the right"+
+			"\nPress <A> \"MOVE\" to the left, <D> to the right"+
 			"\nPress <Space> to \"JUMP\""+
 			"\nPress <J> to \"MELEE ATTACK\", <K> to \"THROW KUNAI\".";
 		if (Input.GetKeyDown (KeyCode.Return)) {
