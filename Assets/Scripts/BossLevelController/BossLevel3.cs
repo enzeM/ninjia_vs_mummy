@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class bossLevelController : MonoBehaviour {
+public class BossLevel3 : MonoBehaviour {
 	[SerializeField]
-	private List<Enemy> bossList;
+	private List<TombStone> bossList;
 	[SerializeField]
 	private GameObject winMenuUI;
 	private int killCount = 0;
@@ -18,12 +18,15 @@ public class bossLevelController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-		for (int i = 0; i < bossList.Count; i++) {
-			if(bossList[i].IsDead){
-				killCount++;
-				bossList.Remove (bossList [i]);
+		if (bossList.Count != 0) {
+			for (int i = 0; i < bossList.Count; i++) {
+				if (bossList [i].IsDead) {
+					killCount++;
+					bossList.Remove (bossList [i]);
+				}
 			}
 		}
+
 		if(killCount == bossNum){
 			Time.timeScale = 0;
 			winMenuUI.SetActive (true);

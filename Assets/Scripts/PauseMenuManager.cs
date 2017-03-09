@@ -35,15 +35,12 @@ public class PauseMenuManager : MonoBehaviour {
 
 	//listen isPause param stop game if is pause
 	void PauseManager() {
-		if (isPause) {
+		if (isPause || Player.Instance.fightBoss) {
 			Time.timeScale = 0;
 		} else {
 			Time.timeScale = 1;
 		}
-		if(Player.Instance.fightBoss){
-			Time.timeScale = 0;
 
-		}
 		if(Player.Instance.IsDead){
 			StartCoroutine (DeathMenu());
 		}

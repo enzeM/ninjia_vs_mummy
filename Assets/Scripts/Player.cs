@@ -221,10 +221,8 @@ public class Player : Character
 		StartCoroutine (resetSpeed (aliveTime));
 	}
 	public IEnumerator resetSpeed (float aliveTime) {
-		print ("start");
 		yield return new WaitForSeconds (aliveTime);
 		this.moveSpeed = defaultSpeed;
-		print ("end");
 	}
 	public int GetHealth(){
 		return this.curHealth;
