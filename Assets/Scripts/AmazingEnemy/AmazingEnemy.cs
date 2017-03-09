@@ -111,6 +111,7 @@ public abstract class AmazingEnemy : MonoBehaviour {
 
 	public virtual IEnumerator Die () {
 		yield return new WaitForSeconds(1);
+		Player.Instance.immortal = false;
 		Destroy(gameObject);
 	}
 
